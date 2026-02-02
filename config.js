@@ -7,8 +7,8 @@ const CONFIG = {
   pageTitle: "Will You Be My Valentine? 💝",
 
   floatingEmojis: {
-    hearts: ['❤️', '💖', '💝', '💗', '💓'],
-    bears: ['🐶', '🦜']
+    hearts: ["❤️", "💖", "💝", "💗", "💓"],
+    bears: ["🐶", "🦜"]
   },
 
   questions: {
@@ -25,13 +25,12 @@ const CONFIG = {
       nextBtn: "Next ❤️"
     },
 
-    // ❤️ FINAL VALENTINE QUESTION (UPDATED)
     third: {
       text: "Will you be my Valentine on February 14th, 2026? 🌹",
       yesBtn: "YES! 💚",
       noBtn: "No 💔",
 
-      // NO button cycles through these each time she clicks
+      // ✅ NEW: NO button phrases
       noPhrases: [
         "Are you sure? 😳",
         "You’re kidding me… 🥺",
@@ -40,7 +39,7 @@ const CONFIG = {
         "Okay please say yesss! 😭💚"
       ],
 
-      // YES button grows every time she clicks NO
+      // ✅ NEW: YES grows each NO click (stops when phrases finish)
       yesGrowStep: 0.18,
       yesMaxScale: 2.2
     }
@@ -82,61 +81,3 @@ const CONFIG = {
     volume: 0.5
   }
 };
-
-
-
-// ===============================================================
-// 🚀 YOU DO NOT NEED A MAIN.JS — THIS FUNCTION JUST WORKS.
-// This magically upgrades the 3rd question’s YES/NO buttons.
-// ===============================================================
-
-window.setupThirdQuestionBehavior = function(yesButtonEl, noButtonEl) {
-  // Make YES green
-  yesButtonEl.style.background = "#2ecc71";
-  yesButtonEl.style.color = "#fff";
-  yesButtonEl.style.transition = "transform 250ms ease";
-
-  // Make NO red
-  noButtonEl.style.background = "#ff3b3b";
-  noButtonEl.style.color = "#fff";
-
-  const phrases = CONFIG.questions.third.noPhrases;
-  const step = CONFIG.questions.third.yesGrowStep;
-  const maxScale = CONFIG.questions.third.yesMaxScale;
-
-  let index = 0;
-  let yesScale = 1;
-
-  noButtonEl.addEventListener("click", () => {
-    // Change NO text
-    if (index < phrases.length) {
-      noButtonEl.textContent = phrases[index];
-      index++;
-    }
-
-    // Grow YES button
-    if (yesScale < maxScale) {
-      yesScale += step;
-      yesButtonEl.style.transform = `scale(${yesScale})`;
-    }
-
-    // Cute shake effect
-    noButtonEl.style.animation = "none";
-    void noButtonEl.offsetWidth;
-    noButtonEl.style.animation = "shake 0.25s";
-  });
-};
-
-
-// Inject shake animation
-const shakeStyle = document.createElement("style");
-shakeStyle.textContent = `
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); }
-}`;
-document.head.appendChild(shakeStyle);
-``
